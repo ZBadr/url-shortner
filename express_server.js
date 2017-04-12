@@ -16,9 +16,9 @@ let urlDatabase = {
 
 function generateRandomString() {
   let random = randomstring.generate({
-  length: 6,
-  charset: 'alphanumeric'
-});
+    length: 6,
+    charset: 'alphanumeric'
+  });
   return random;
 }
 
@@ -27,10 +27,20 @@ app.get("/urls/new", (req, res) => {
 });
 
 app.post("/urls", (req, res) => {
-  let randomURL = generateRandomString();
-  let lURL = req.body.longURL;
-  urlDatabase[randomURL] = lURL;
+  const randomURL = generateRandomString();
+  urlDatabase[randomURL] = req.body.longURL;
   res.redirect(`/urls/${randomURL}`);
+});
+
+app.post("/urls/:id/delete", (req, res) => {
+  delete urlDatabase[req.params.id];
+  res.redirect('/urls')
+});
+
+app.post("/urls/:id", (req, res) => {
+  let shortURL = req.params.id;
+  urlDatabase[shortURL] = req.body['longURL'];
+  res.redirect('/urls')
 });
 
 app.get("/urls/:id", (req, res) => {
@@ -40,7 +50,6 @@ app.get("/urls/:id", (req, res) => {
 });
 
 app.get("/u/:shortURL", (req, res) => {
-  // console.log(req.params.shortURL);
   let longURL = urlDatabase[req.params.shortURL];
   res.redirect(longURL);
 });

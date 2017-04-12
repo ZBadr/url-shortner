@@ -5,6 +5,11 @@
   <% include ./partials/_header %>
 </head>
 <body>
-    <p><%= shortURL %> - <%= longURL %></p>
+  <form method="POST" action="/urls/<%= shortURL %>" style="">
+    <label for="longURL">Update URL:</label>
+     <input id="longURL" type="text" name="longURL" placeholder="http://" style="width: 300px">
+     <input type="submit" value="Submit">
+  </form>
+    <p style= "display: inline;"><%= shortURL %> - <%= longURL %></p>
 </body>
 </html>
