@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <% include ./partials/_header %>
+</head>
+<body>
+    <ul>
+     <% for (i in urls) { %>
+       <li><%=i %> : <%=urls[i] %></li>
+     <% } %>
+    </ul>
+<a href="url">Shorten URL</a>
+</body>
+</html>
