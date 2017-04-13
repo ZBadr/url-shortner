@@ -18,6 +18,19 @@ let urlDatabase = {
   "9sm5xK": "http://www.google.com"
 };
 
+const users = {
+  "userRandomID": {
+    id: "userRandomID",
+    email: "user@example.com",
+    password: "purple-monkey-dinosaur"
+  },
+ "user2RandomID": {
+    id: "user2RandomID",
+    email: "user2@example.com",
+    password: "dishwasher-funk"
+  }
+}
+
 function generateRandomString() {
   let random = randomstring.generate({
     length: 6,
@@ -32,20 +45,31 @@ app.get("/register", (req, res) => {
 });
 
 app.post("/register", (req, res) => {
-  res.cookie("username", req.body.username);
-  res.redirect("/")
+  if (users[req.cookies["user_id"]]) {
+    res.send(400, {Error: "You are already registered on this website!"});
+  }
+  let user_id = generateRandomString();
+
+  if (req.body.Email === "" || req.body.Password === "") {
+    res.send(400, {Error: "Please enter your email and password correctly"});
+  } else {
+    res.cookie("user_id", user_id);
+    users[user_id] = {};
+    users[user_id]["id"] = user_id;
+    users[user_id]["email"] = req.body.Email;
+    users[user_id]["password"] = req.body.Password;
+    con
+    res.redirect("/");
+  }
+
 });
 
 app.get("/", (req, res) => {
-  // let templateVars = { username: req.cookies["username"]}
-  // res.render("homepage", templateVars);
   res.end("word");
 });
 
 app.post("/logout", (req, res) => {
   res.clearCookie("username");
-  // let templateVars = { username: req.cookies["username"]}
-  // res.render("homepage", templateVars)
   res.redirect("/")
 });
 
