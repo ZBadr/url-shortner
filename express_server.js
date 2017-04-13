@@ -2,9 +2,13 @@
 const express = require("express");
 const randomstring = require("randomstring");
 const bodyParser = require("body-parser");
+const cookieParser = require('cookie-parser');
+
 
 const app = express();
 app.use(bodyParser.urlencoded({extended: true}));
+app.use(cookieParser());
+
 const PORT = process.env.PORT || 8080; // default port 8080
 
 app.set("view engine", "ejs")
@@ -21,6 +25,17 @@ function generateRandomString() {
   });
   return random;
 }
+
+app.get("/", (req, res) => {
+res.render("homepage");
+});
+
+app.post("/login", (req, res) => {
+  console.log(req.body.username);
+  res.cookie('username', req.body.username);
+  res.redirect('/')
+
+});
 
 app.get("/urls/new", (req, res) => {
   res.render("urls_new");
