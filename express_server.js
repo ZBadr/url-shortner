@@ -26,6 +26,16 @@ function generateRandomString() {
   return random;
 }
 
+app.get("/register", (req, res) => {
+  let templateVars = { username: req.cookies["username"]}
+  res.render("register", templateVars);
+});
+
+app.post("/register", (req, res) => {
+  res.cookie("username", req.body.username);
+  res.redirect("/")
+});
+
 app.get("/", (req, res) => {
   // let templateVars = { username: req.cookies["username"]}
   // res.render("homepage", templateVars);
