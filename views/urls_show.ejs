@@ -2,7 +2,8 @@
 <html lang="en">
 <head>
   <title>TinyApp</title>
-  <% include ./partials/_header %>
+  <%- include('partials/_header'); %>
+
 </head>
 <body>
   <form method="POST" action="/urls/<%= shortURL %>" style="">
