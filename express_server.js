@@ -74,11 +74,13 @@ app.post("/logout", (req, res) => {
   res.redirect("/")
 });
 
+app.get("/login", (req, res) => {
+  res.render("login")
+});
+
 app.post("/login", (req, res) => {
-  console.log(req.body.username);
   res.cookie("username", req.body.username);
   res.redirect("/")
-
 });
 
 app.get("/urls/new", (req, res) => {
