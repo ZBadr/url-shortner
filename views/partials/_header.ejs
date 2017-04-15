@@ -1,8 +1,15 @@
 
 <title>TinyApp</title>
 
-
+<% if (userId) { %>
+  <form method="POST" action="/logout" >
+    <span><%= userId %></span>
+    <button type="submit">logout</button>
+  </form>
+<% } else {%>
 
 <a href="http://localhost:8080/register">Register</a>
 
 <a href="http://localhost:8080/login">Login</a>
+
+<% } %>
