@@ -4,16 +4,20 @@
   <% include ./partials/_header %>
 </head>
 <body>
+
+<%= email %>
+
     <ul>
      <% for (i in urls) { %>
-        <li><%=i %> : <%= urls[i] %></li>
+     <% if (userId === urls[i][1]) { %>
+        <li><%=i %> : <%= urls[i][0] %></li>
         <form method="POST" action="/urls/<%= i %>/delete">
            <button type="submit">Delete</button>
         </form>
         <form method="GET" action="/urls/<%= i%>">
            <button type="submit">Edit</button>
         </form>
-     <% } %>
+     <%  } }%>
     </ul>
 </body>
 </html>
