@@ -101,8 +101,8 @@ app.post("/login", (req, res) => {
   let checker = 0;
   for (var i in users) {
     let temp = i;
-    // console.log(temp);
-    if(users[temp].email === req.body.Email && bcrypt.compareSync(users[temp].password, req.body.Password)) {
+    console.log(users[temp].password);
+    if(users[temp].email === req.body.Email && bcrypt.compareSync(req.body.Password, users[temp].password)) {
         checker = 1;
         res.cookie("userId", users[temp].id);
         res.redirect("/");
