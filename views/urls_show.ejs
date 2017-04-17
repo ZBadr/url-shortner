@@ -8,6 +8,8 @@
 <%= email %>
 
 <body>
+     <% for (i in urls) { %>
+     <% if (userId === urls[i][1]) { %>
   <form method="POST" action="/urls/<%= shortURL %>" style="">
     <label for="longURL">Update URL:</label>
      <input id="longURL" type="text" name="longURL" placeholder="http://" style="width: 300px">
