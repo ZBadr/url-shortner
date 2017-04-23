@@ -4,7 +4,13 @@
   <title>TinyApp</title>
   <% include ./partials/_header %>
 </head>
+<% if (userId) { %>
 <body>
+<a href="http://localhost:8080/urls/new">New URL</a>
+<a href="http://localhost:8080/urls">URLS</a>
   <h1> Welcome To The Homepage of URL Shortener </h1>
 </body>
+<% } else {%>
+    <meta http-equiv="refresh" content="0; URL='http://localhost:8080/login'" />
+    <% } %>
 </html>

@@ -22,7 +22,10 @@ const PORT = process.env.PORT || 8080; // default port 8080
 
 app.set("view engine", "ejs")
 
-let urlDatabase = {};
+let urlDatabase = {
+  "b2xVn2": ["http://www.lighthouselabs.ca", "userId1"],
+  "9sm5xK": ["http://www.google.com", "userId2"]
+};
 
 const users = {
   "userRandomID": {
@@ -113,7 +116,7 @@ app.post("/login", (req, res) => {
     console.log(users[temp].password);
     if(users[temp].email === req.body.Email && bcrypt.compareSync(req.body.Password, users[temp].password)) {
         checker = 1;
-        res.session("userId", users[temp].id);
+        req.session.userId = users[temp].id;
         res.redirect("/");
       }
     } if (checker === 0) {
@@ -124,8 +127,9 @@ app.post("/login", (req, res) => {
 
 app.get("/urls/new", (req, res) => {
   let e = getEmail(req.session["userId"]);
-  let templateVars = { userId: req.session["userId"], email: e}
+  let templateVars = { userId: req.session["userId"], urls: urlDatabase, email: e};
   res.render("urls_new", templateVars);
+  res.redirect("/urls");
 });
 
 app.get("/urls", (req, res) => {
@@ -136,12 +140,20 @@ app.get("/urls", (req, res) => {
 
 app.post("/urls", (req, res) => {
   const randomURL = generateRandomString();
+  let e = getEmail(req.session["userId"]);
   urlDatabase[randomURL] = [req.body.longURL, req.session["userId"]];
+  let templateVars = { userId: req.session["userId"], urls: urlDatabase, email: e};
   console.log(urlDatabase);
-  res.redirect(`/urls/${randomURL}`);
+  // res.redirect(`/urls/${randomURL}`);
+  res.render("urls_index", templateVars);
 });
 
+
+
+
 app.get("/urls/:id", (req, res) => {
+  if (urlDatabase[req.params.id][1] === req.session["userId"]) {
+  if (urlDatabase[req.params.id]) {
   let e = getEmail(req.session["userId"]);
   let templateVars = { userInfo: users[req.session["userId"]],
                        userId: req.session["userId"],
@@ -149,6 +161,12 @@ app.get("/urls/:id", (req, res) => {
                        longURL: urlDatabase[req.params.id][0],
                        email: e};
   res.render("urls_show", templateVars);
+} else {
+  res.send(404, {Error: "This URL does not exist"});
+}
+} else {
+  res.send(401, {Error: "Tsk tsk, nice try though :D"});
+}
 });
 
 app.post("/urls/:id", (req, res) => {
