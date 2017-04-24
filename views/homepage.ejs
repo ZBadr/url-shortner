@@ -5,9 +5,11 @@
   <% include ./partials/_header %>
 </head>
 <% if (userId) { %>
-<body>
-<a href="http://localhost:8080/urls/new">New URL</a>
-<a href="http://localhost:8080/urls">URLS</a>
+<body bgcolor="#E6E6FA">
+<ul>
+  <li> <a href="http://localhost:8080/urls/new">New URL</a> </li>
+  <li> <a href="http://localhost:8080/urls">URLS</a> </li>
+</ul>
   <h1> Welcome To The Homepage of URL Shortener </h1>
 </body>
 <% } else {%>

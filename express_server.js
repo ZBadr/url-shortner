@@ -1,21 +1,16 @@
 "use strict";
-const express = require("express");
+const express      = require("express");
 const randomstring = require("randomstring");
-const bodyParser = require("body-parser");
-// const cookieParser = require('cookie-parser');
-var cookieSession = require('cookie-session');
-const bcrypt = require('bcrypt');
+const bodyParser   = require("body-parser");
+let cookieSession  = require('cookie-session');
+const bcrypt       = require('bcrypt');
+const app          = express();
 
-
-const app = express();
 app.use(bodyParser.urlencoded({extended: true}));
-// app.use(cookieParser());
+
 app.use(cookieSession({
   name: "session",
   keys: ["keys1", "keys2"],
-
-  // Cookie Options
-  // maxAge: 24 * 60 * 60 * 1000 // 24 hours
 }))
 
 const PORT = process.env.PORT || 8080; // default port 8080
@@ -49,7 +44,6 @@ function generateRandomString() {
 }
 
 function getEmail(userId) {
-  // console.log(userId);
   for (var i in users) {
     console.log(i, userId);
     if (i === userId) {
@@ -74,7 +68,6 @@ app.post("/register", (req, res) => {
     res.send(400, {Error: "Please enter your email and password correctly"});
   } else {
     req.session.userId = userId;
-    // res.cookie("userId", userId);
     users[userId] = {};
     users[userId]["id"] = userId;
     users[userId]["email"] = req.body.Email;
@@ -87,7 +80,6 @@ app.post("/register", (req, res) => {
 });
 
 app.get("/", (req, res) => {
-  // console.log(req.cookies["userId"]);
   res.render("homepage", {
     userId: req.session["userId"]
   });
@@ -123,7 +115,6 @@ app.post("/login", (req, res) => {
       res.send(403, {Error: "Tsk tsk tsk, try again"});
   }
 });
-  // res.cookie("user_id", users[req.cookies["user_id"]]);
 
 app.get("/urls/new", (req, res) => {
   let e = getEmail(req.session["userId"]);
@@ -144,7 +135,6 @@ app.post("/urls", (req, res) => {
   urlDatabase[randomURL] = [req.body.longURL, req.session["userId"]];
   let templateVars = { userId: req.session["userId"], urls: urlDatabase, email: e};
   console.log(urlDatabase);
-  // res.redirect(`/urls/${randomURL}`);
   res.render("urls_index", templateVars);
 });
 
